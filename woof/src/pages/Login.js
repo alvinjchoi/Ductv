@@ -1,30 +1,22 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
 
 import React, { Component } from 'react';
+
 import {
     AsyncStorage,
     StyleSheet,
     Text,
     View,
     ImageBackground,
-    Image,
     Dimensions,
     TextInput,
     TouchableOpacity,
-    Button,
     Alert,
-    StatusBar,
 } from 'react-native';
-import {Actions} from 'react-native-router-flux';
 
-import bgImage from '../images/loginbkg.jpg'
-import logo from '../images/logo.png'
+import {Actions} from 'react-native-router-flux';
+import Button from 'react-native-button';
+import bgImage from '../images/LoginBkg.jpg'
+import SvgComponent from '../images/SvgAssets/logoSVG'
 
 
 const { width: WIDTH } = Dimensions.get('window');
@@ -39,22 +31,22 @@ export default class Login extends React.Component {
         }
     }
 
-    signUp() {
+    static signUp() {
 		Actions.signUp()
     }
 
     validHome = () => {
       const { email } = this.state;
-      response = fetch('http://127.0.0.1:8000/user/')
+      const response = fetch('http://127.0.0.1:8000/user/')
         .then(function(response) {
           return response.json()
         })
         .then(function(myJson){
-          users =JSON.stringify(myJson);
+          users = JSON.stringify(myJson);
           users = JSON.parse(users);
           loggedInUser = null;
-          for(var i = 0; i<users.length;i++){
-            if (users[i].email == email){
+          for(var i = 0; i < users.length; i++){
+            if (users[i].email === email){
               loggedInUser = users[i];
             }
           }
@@ -69,7 +61,7 @@ export default class Login extends React.Component {
             }
           } else { Alert.alert("Invalid Email")}
       });
-    }
+    };
 
     goHome(){
       fetch('http://127.0.0.1:8000/user/3/')
@@ -92,53 +84,53 @@ export default class Login extends React.Component {
     render() {
         return (
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-                <StatusBar barStyle="light-content"/>
-
-                <View style={styles.logoContainer}>
-                    <Image source={logo} style={styles.logo} />
-                    <Text style={styles.logoText}>Ducktive</Text>
+                <View>
+                    <Text style={styles.topTitle}>
+                        Get Things Done.
+                    </Text>
+                    <SvgComponent/>
                 </View>
 
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Email'}
-                        // secureTextEntry={true}
-                        placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-                        autoCapitalize = 'none'
-                        underLineColorAndroid='transparent'
-                        onChangeText={(email) => this.setState({ email })}
-                        value={this.state.email}
-                        marginBottom={10}
-                        fontFamily= 'Montserrat-ExtraLight'
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Password'}
-                        secureTextEntry={true}
-                        placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-                        autoCapitalize = 'none'
-                        underLineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({ password })}
-                        value={this.state.password}
-                        fontFamily= 'Montserrat-ExtraLight'
-                    />
-                </View>
+                <TextInput
+                    autoCapitalize='none'
+                    style={styles.input}
+                    placeholder={'Username'}
+                    placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                    underLineColorAndroid='transparent'
+                    onChangeText={(username) => this.setState({username})}
+                    value={this.state.username}
+                />
 
-                <TouchableOpacity
-                    onPress={this.validHome}
-                    style={styles.btnLogin}
-                >
-                <Text style = {styles.btnLoginText}> Log in </Text>
-                </TouchableOpacity>
+                <TextInput
+                    autoCapitalize='none'
+                    style={styles.input}
+                    placeholder={'Password'}
+                    secureTextEntry={true}
+                    placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                    underLineColorAndroid='transparent'
+                    onChangeText={(password) => this.setState({password})}
+                    value={this.state.password}
+                />
+
+                <Button
+                    containerStyle={{
+                        width: WIDTH - 55,
+                        height: 45,
+                        borderRadius: 5,
+                        alignItems: 'center',
+                        marginTop: 20,
+                        backgroundColor: '#3AD29F',
+                        justifyContent: 'center'}}
+                    style={{fontSize: 15, color: 'white', fontFamily: 'Helvetica Neue', fontWeight: 'bold'}}
+                    color= 'rgba(255, 255, 255, 0.7)'
+                    onPress={this.goHome}>
+                    LOGIN
+                </Button>
 
                 <View>
-                    <TouchableOpacity onPress={this.signUp}>
+                    <TouchableOpacity onPress={Login.signUp}>
                         <Text style={styles.signupButton} >
-                            First time here? {' '}
-                            <Text style = {{fontWeight: 'bold'}}>
-                                Sign up.
-                            </Text>
+                            New user? Sign up
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -149,6 +141,15 @@ export default class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    topTitle: {
+        textAlign: 'left',
+        fontFamily: 'Helvetica Neue',
+        fontWeight: 'bold',
+        fontSize: 40,
+        marginLeft: 35,
+        marginRight: 200
+    },
+
     backgroundContainer: {
         flex: 1,
         width: null,
@@ -192,21 +193,23 @@ const styles = StyleSheet.create({
         // opacity: ,
     },
     input: {
+        borderBottomColor: '#bbb',
+        borderBottomWidth: 1,
+        // borderWidth: 0.7,
         width: WIDTH - 55,
+        fontFamily: 'Helvetica Neue',
         height: 45,
-        borderRadius: 45,
+        // borderRadius: 5,
         fontSize: 16,
-        paddingLeft: 45,
-        backgroundColor: 'rgba(0,0,0,0.35)',
-        color: 'rgba(255, 255, 255, 0.7)',
+        paddingLeft: 25,
         marginHorizontal: 25,
+        marginBottom: 10,
     },
     inputContainer: {
         marginTop: 50,
     },
     signupButton:{
-        fontFamily: 'Montserrat-ExtraLight',
-        color: 'white',
+        color: '#3ad29f',
         fontSize: 14,
         fontWeight: '500',
         alignItems: 'center',

@@ -17,14 +17,13 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
-  Button,
   Alert,
-
 } from 'react-native';
 
+import Button from 'react-native-button'
 import { Actions } from 'react-native-router-flux';
-import bgImage from '../images/signupbkg.jpg'
-import logo from '../images/logo.png'
+import bgImage from '../images/LoginBkg.jpg'
+import SvgComponent from "../images/SvgAssets/signupSVG.js";
 
 const { width: WIDTH } = Dimensions.get('window');
 
@@ -155,12 +154,12 @@ export default class signUp extends React.Component {
   //   return
   // }
 
-  handleSubmit = () => {
+  handleSubmit = (title, message) => {
     const { username, email, password, confirmPassword } = this.state;
 
-    if(password != confirmPassword){
+    if(password !== confirmPassword){
       alert("Passwords need to match");
-    } else if (username == '' || password == '' || confirmPassword ==''|| email =='') {
+    } else if (username === '' || password === '' || confirmPassword ===''|| email ==='') {
       alert("All fields must be included.")
     }
     else {
@@ -181,7 +180,7 @@ export default class signUp extends React.Component {
             answer = AsyncStorage.setItem('user', usr);
             Actions.Login();
           } catch (error) {
-            Alert.alert("Error");
+            Alert.alert("Error", message);
           }
         })
         .catch((error) => {
@@ -216,67 +215,77 @@ export default class signUp extends React.Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
 
-          <View style={styles.logoContainer}>
-              <Image source={logo} style={styles.logo} />
-              <Text style={styles.SignupText}>Sign Up</Text>
+          <SvgComponent/>
+
+          {/*<View style={styles.logoContainer}>*/}
+          {/*    <Image source={logo} style={styles.logo} />*/}
+          {/*    <Text style={styles.SignupText}>Sign Up</Text>*/}
+          {/*</View>*/}
+
+          <View style={styles.inputContainer}>
+              <TextInput
+                  autoFocus='true'
+                  autoCapitalize='none'
+                  style={styles.input}
+                  placeholder={'Username'}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                  underLineColorAndroid='transparent'
+                  onChangeText={(val) => this.setState({username: val})}
+                  value={this.state.username}
+              />
           </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={'Username'}
-            placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-            underLineColorAndroid='transparent'
-            onChangeText={(username) => this.setState({ username })}
-            value={this.state.username}
-            fontFamily= 'Montserrat-ExtraLight'
-          />
-        </View>
+          <View style={styles.inputContainer}>
+              <TextInput
+                  autoCapitalize='none'
+                  style={styles.input}
+                  placeholder={'Email address'}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                  underLineColorAndroid='transparent'
+                  onChangeText={(val) => this.setState({email: val})}
+                  value={this.state.email}
+              />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={'Email address'}
-            autoCapitalize = 'none'
-            placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-            underLineColorAndroid='transparent'
-            onChangeText={(email) => this.setState({ email })}
-            value={this.state.email}
-            fontFamily= 'Montserrat-ExtraLight'
-          />
-        </View>
+          <View style={styles.inputContainer}>
+              <TextInput
+                  autoCapitalize='none'
+                  style={styles.input}
+                  placeholder={'Password'}
+                  secureTextEntry={true}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                  underLineColorAndroid='transparent'
+                  onChangeText={(val) => this.setState({password: val })}
+                  value={this.state.password}
+              />
+          </View>
+          <View style={styles.inputContainer}>
+              <TextInput
+                  autoCapitalize='none'
+                  style={styles.input}
+                  placeholder={'Confirm Password'}
+                  secureTextEntry={true}
+                  placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
+                  underLineColorAndroid='transparent'
+                  onChangeText={(val) => this.setState({confirmPassword: val })}
+                  value={this.state.confirmPassword}
+              />
+          </View>
 
-        <View style={styles.inputContainer}>
-         <TextInput
-             style={styles.input}
-             placeholder={'Password'}
-             secureTextEntry={true}
-             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-             underLineColorAndroid='transparent'
-             onChangeText={(password) => this.setState({ password })}
-             value={this.state.password}
-             fontFamily= 'Montserrat-ExtraLight'
-           />
-         </View>
-         <View style={styles.inputContainer}>
-           <TextInput
-             style={styles.input}
-             placeholder={'Confirm Password'}
-             secureTextEntry={true}
-             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
-             underLineColorAndroid='transparent'
-             onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
-             value={this.state.confirmPassword}
-             fontFamily= 'Montserrat-ExtraLight'
-           />
-         </View>
-
-          <TouchableOpacity
-              onPress={this.handleSubmit}
-              style={styles.btnLogin}
-          >
-              <Text style = {styles.btnSignupText}> Sign me up! </Text>
-          </TouchableOpacity>
+          <Button
+              containerStyle={{
+                  width: WIDTH - 55,
+                  height: 45,
+                  borderRadius: 5,
+                  alignItems: 'center',
+                  marginTop: 20,
+                  backgroundColor: '#3AD29F',
+                  justifyContent: 'center'}}
+              style={{fontSize: 15, color: 'white', fontFamily: 'Helvetica Neue', fontWeight: 'bold'}}
+              color= 'rgba(255, 255, 255, 0.7)'
+              onPress={this.handleSubmit.bind(this)}>
+              SIGN ME UP
+          </Button>
 
       </ImageBackground>
     );
@@ -299,18 +308,21 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       fontWeight: 'bold',
       opacity: 1,
-  },
-  input: {
-    width: WIDTH - 55, //padding on right
-    height: 45, //height of text box
-    borderRadius: 45,
-    fontSize: 16,
-    paddingLeft: 45, //text padding on left
-    backgroundColor: 'rgba(0,0,0,0.35)',
-    color: 'rgba(255, 255, 255, 0.7)',
-    marginHorizontal: 25, //padding on left
-    fontFamily: 'Montserrat-ExtraLight'
-  },
+    },
+    input: {
+        borderBottomColor: '#bbb',
+        borderBottomWidth: 1,
+        // borderWidth: 0.7,
+        width: WIDTH - 55,
+        fontFamily: 'Helvetica Neue',
+        height: 45,
+        // borderRadius: 5,
+        fontSize: 16,
+        paddingLeft: 25,
+        marginHorizontal: 25,
+        marginBottom: 10,
+    },
+
   logoContainer: {
     alignItems: 'center',
     marginBottom: 50,
@@ -335,7 +347,7 @@ const styles = StyleSheet.create({
       borderRadius: 45,
       justifyContent: 'center',
       marginTop: 160,
-      backgroundColor: '#413a5d',
+      backgroundColor: '#3ad29f',
       opacity: 0.8,
   },
     SignupText: {

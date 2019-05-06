@@ -3,7 +3,7 @@ import { Text, View, Alert, StyleSheet, ScrollView, AsyncStorage, StatusBar, Ima
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
-import bkg from '../images/loginbkg.jpg';
+import bkg from '../images/LoginBkg.jpg';
 import DatePicker from 'react-native-datepicker';
 
 const { width: WIDTH } = Dimensions.get('window');

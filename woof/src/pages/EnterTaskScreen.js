@@ -21,7 +21,7 @@ import {
   StatusBar,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
-import bkg from '../images/loginbkg.jpg'
+import bkg from '../images/LoginBkg.jpg'
 
 
 const { width: WIDTH } = Dimensions.get('window');
